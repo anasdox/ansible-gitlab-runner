@@ -14,9 +14,7 @@
     --executor '{{ gitlab_runner_executor }}'
     --locked='{{gitlab_runner_locked}}'
     --docker-image '{{ gitlab_runner_docker_image }}'
-    {% if gitlab_runner_docker_volumes is defined %}
-    --docker-volumes "{{ gitlab_runner_docker_volumes | join('" "') }}"
-    {% endif %}
+    {{ gitlab_runner_docker_volumes | map('regex_replace', '^(.*)$', '--docker-volumes \1' ) | join(' ') }}
     --ssh-user '{{ gitlab_runner_ssh_user }}'
     --ssh-host '{{ gitlab_runner_ssh_host }}'
     --ssh-port '{{ gitlab_runner_ssh_port }}'
